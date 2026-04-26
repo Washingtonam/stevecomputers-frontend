@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { apiUrl } from "../../lib/api";
 
+const user = JSON.parse(localStorage.getItem("user"));
+
 const Users = () => {
   const [users, setUsers] = useState([]);
   const token = localStorage.getItem("token");
@@ -54,14 +56,24 @@ const Users = () => {
               <td className="capitalize">{u.role}</td>
 
               <td className="flex gap-2 p-3">
-                <button onClick={() => changeRole(u._id, "admin")}>
-                  Make Admin
-                </button>
 
-                <button onClick={() => changeRole(u._id, "user")}>
-                  Remove Admin
-                </button>
-              </td>
+                {user?.role === "superadmin" && u.role !== "superadmin" && (
+                    <>
+                    <button onClick={() => changeRole(u._id, "admin")}>
+                        Make Admin
+                    </button>
+
+                    <button onClick={() => changeRole(u._id, "user")}>
+                        Remove Admin
+                    </button>
+                    </>
+                )}
+
+                {u.role === "superadmin" && (
+                    <span className="text-xs text-gray-400">Protected</span>
+                )}
+
+                </td>
             </tr>
           ))}
         </tbody>
