@@ -10,8 +10,17 @@ const Sidebar = () => {
     { name: "Dashboard", path: "/admin", icon: "🏠" },
     { name: "Products", path: "/admin/products", icon: "📦" },
     { name: "Orders", path: "/admin/orders", icon: "🧾" },
-    { name: "Delivery", path: "/admin/delivery", icon: "🚚" } // 🔥 NEW
+    { name: "Delivery", path: "/admin/delivery", icon: "🚚" }
   ];
+
+  // 🔥 ADD USERS MENU (ONLY FOR ADMIN / SUPERADMIN)
+  if (user?.role === "admin" || user?.role === "superadmin") {
+    menu.push({
+      name: "Users",
+      path: "/admin/users",
+      icon: "👥"
+    });
+  }
 
   const handleLogout = () => {
     localStorage.removeItem("user");

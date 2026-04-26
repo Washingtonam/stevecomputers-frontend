@@ -37,6 +37,7 @@ import EditProduct from "./admin/pages/EditProduct";
 import AdminLayout from "./admin/components/AdminLayout";
 import OrderDetails from "./admin/pages/OrderDetails";
 import Delivery from "./admin/pages/Delivery";
+import Users from "./admin/pages/Users";
 
 function App() {
   const location = useLocation();
@@ -84,6 +85,7 @@ function App() {
           <Route path="products/new" element={<AddProduct />} />
           <Route path="products/:id/edit" element={<EditProduct />} />
           <Route path="delivery" element={<Delivery />} /> {/* 🔥 NEW */}
+          <Route path="users" element={<Users />} />
 
           <Route path="orders" element={<AdminOrders />} />
           <Route path="orders/:id" element={<OrderDetails />} />
