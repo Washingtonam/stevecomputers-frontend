@@ -1,11 +1,17 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { apiUrl } from "../lib/api";
+import toast from "react-hot-toast";
 
 const Login = () => {
+  const navigate = useNavigate();
+
   const [form, setForm] = useState({
     email: "",
     password: ""
   });
+
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     setForm({
@@ -15,7 +21,13 @@ const Login = () => {
   };
 
   const handleLogin = async () => {
+    if (!form.email || !form.password) {
+      return toast.error("Please fill all fields");
+    }
+
     try {
+      setLoading(true);
+
       const res = await fetch(apiUrl("/api/auth/login"), {
         method: "POST",
         headers: {
@@ -30,18 +42,18 @@ const Login = () => {
         localStorage.setItem("token", data.token);
         localStorage.setItem("user", JSON.stringify(data.user));
 
-        alert("Login successful");
+        toast.success("Login successful");
 
-        // 🔥 FORCE FULL APP REFRESH (IMPORTANT)
-        window.location.href = "/";
-
+        navigate("/");
       } else {
-        alert(data.message);
+        toast.error(data.message);
       }
 
     } catch (error) {
       console.error(error);
-      alert("Login failed");
+      toast.error("Login failed");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -68,10 +80,22 @@ const Login = () => {
 
       <button
         onClick={handleLogin}
+        disabled={loading}
         className="bg-black text-white px-4 py-2 w-full"
       >
-        Login
+        {loading ? "Logging in..." : "Login"}
       </button>
+
+      <p
+        onClick={() => navigate("/register")}
+        className="text-sm text-center mt-4 text-blue-600 cursor-pointer"
+      >
+        Don’t have an account? Register
+      </p>
+
+      <p className="text-sm text-center mt-2 text-gray-500 cursor-pointer">
+        Forgot Password?
+      </p>
 
     </div>
   );
