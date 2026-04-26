@@ -1,10 +1,11 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useCart } from "../context/cart-context";
 import { useState } from "react";
 
 const Navbar = () => {
   const { cart } = useCart();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [showCategories, setShowCategories] = useState(false);
   const [showServices, setShowServices] = useState(false);
@@ -27,19 +28,21 @@ const Navbar = () => {
     setSearch("");
   };
 
+  const isActive = (path) => location.pathname === path;
+
   const categories = ["Phones", "Accessories", "Gadgets", "Power Banks"];
 
   const services = [
-    { name: "POS Installation", path: "/services/pos" },
+    { name: "Business Software Setup", path: "/services/pos" },
     { name: "CCTV Installation", path: "/services/cctv" },
     { name: "Repairs", path: "/services/repairs" },
     { name: "Training", path: "/services/training" }
   ];
 
   return (
-    <div className="bg-white border-b shadow-sm px-6 py-3 flex justify-between items-center">
+    <div className="sticky top-0 z-50 bg-white border-b shadow-sm px-6 py-3 flex justify-between items-center">
 
-      {/* ================= LEFT ================= */}
+      {/* LEFT */}
       <div className="flex items-center gap-6">
 
         <Link to="/" className="font-bold text-lg md:text-xl">
@@ -57,7 +60,7 @@ const Navbar = () => {
           </button>
 
           {showCategories && (
-            <div className="absolute left-0 mt-2 bg-white border shadow-md rounded w-48 z-50">
+            <div className="absolute left-0 mt-2 bg-white border shadow-lg rounded w-48 z-50 animate-fadeIn">
               {categories.map((cat) => (
                 <Link
                   key={cat}
@@ -82,7 +85,7 @@ const Navbar = () => {
           </button>
 
           {showServices && (
-            <div className="absolute left-0 mt-2 bg-white border shadow-md rounded w-52 z-50">
+            <div className="absolute left-0 mt-2 bg-white border shadow-lg rounded w-56 z-50 animate-fadeIn">
               {services.map((s) => (
                 <Link
                   key={s.name}
@@ -96,31 +99,50 @@ const Navbar = () => {
           )}
         </div>
 
-        <Link to="/about" className="hidden md:block text-sm hover:text-blue-600">
+        <Link
+          to="/products"
+          className={`hidden md:block text-sm ${
+            isActive("/products") ? "text-black font-semibold" : "hover:text-blue-600"
+          }`}
+        >
+          Shop
+        </Link>
+
+        <Link
+          to="/about"
+          className={`hidden md:block text-sm ${
+            isActive("/about") ? "text-black font-semibold" : "hover:text-blue-600"
+          }`}
+        >
           About
         </Link>
 
-        <Link to="/products" className="hidden md:block text-sm hover:text-blue-600">
-          Shop
+        <Link
+          to="/contact"
+          className={`hidden md:block text-sm ${
+            isActive("/contact") ? "text-black font-semibold" : "hover:text-blue-600"
+          }`}
+        >
+          Contact
         </Link>
 
       </div>
 
-      {/* ================= CENTER ================= */}
+      {/* CENTER */}
       <form onSubmit={handleSearch} className="hidden md:flex flex-1 max-w-md mx-6">
         <input
           type="text"
           placeholder="Search products..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="w-full border rounded-l px-3 py-1.5 text-sm focus:outline-none"
+          className="w-full border rounded-l px-3 py-1.5 text-sm focus:outline-none shadow-sm"
         />
         <button className="bg-blue-600 text-white px-4 rounded-r text-sm">
           Search
         </button>
       </form>
 
-      {/* ================= RIGHT ================= */}
+      {/* RIGHT */}
       <div className="flex items-center gap-4 text-sm">
 
         <Link to="/cart" className="relative text-lg">
@@ -133,9 +155,14 @@ const Navbar = () => {
         </Link>
 
         {!user ? (
-          <Link to="/login" className="hover:underline">
-            Login
-          </Link>
+          <div className="flex gap-3">
+            <Link to="/login" className="hover:underline">
+              Login
+            </Link>
+            <Link to="/register" className="font-semibold hover:underline">
+              Register
+            </Link>
+          </div>
         ) : (
           <div
             className="relative"
@@ -143,11 +170,11 @@ const Navbar = () => {
             onMouseLeave={() => setShowUserMenu(false)}
           >
             <button className="font-medium hover:text-blue-600">
-              {user.name?.split(" ")[0] || "Account"} ▾
+              Hi, {user.name?.split(" ")[0] || "User"} ▾
             </button>
 
             {showUserMenu && (
-              <div className="absolute right-0 mt-2 bg-white border shadow-md rounded w-44 z-50">
+              <div className="absolute right-0 mt-2 bg-white border shadow-lg rounded w-44 z-50 animate-fadeIn">
 
                 <Link to="/orders" className="block px-4 py-2 hover:bg-gray-100">
                   My Orders
