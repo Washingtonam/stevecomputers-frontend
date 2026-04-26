@@ -1,4 +1,4 @@
-const fallbackApiBaseUrl = "http://stevecomputers-backend.onrender.com";
+const fallbackApiBaseUrl = "https://stevecomputers-backend.onrender.com";
 
 export const API_BASE_URL = (
   import.meta.env.VITE_API_BASE_URL || fallbackApiBaseUrl
