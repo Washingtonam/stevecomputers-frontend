@@ -42,7 +42,6 @@ const Navbar = () => {
       {/* ================= LEFT ================= */}
       <div className="flex items-center gap-6">
 
-        {/* LOGO */}
         <Link to="/" className="font-bold text-lg md:text-xl">
           Steve Computer Warehouse
         </Link>
@@ -58,7 +57,7 @@ const Navbar = () => {
           </button>
 
           {showCategories && (
-            <div className="absolute top-7 left-0 bg-white border shadow-md rounded w-48 z-50">
+            <div className="absolute left-0 mt-2 bg-white border shadow-md rounded w-48 z-50">
               {categories.map((cat) => (
                 <Link
                   key={cat}
@@ -83,7 +82,7 @@ const Navbar = () => {
           </button>
 
           {showServices && (
-            <div className="absolute top-7 left-0 bg-white border shadow-md rounded w-52 z-50">
+            <div className="absolute left-0 mt-2 bg-white border shadow-md rounded w-52 z-50">
               {services.map((s) => (
                 <Link
                   key={s.name}
@@ -97,19 +96,17 @@ const Navbar = () => {
           )}
         </div>
 
-        {/* ABOUT */}
         <Link to="/about" className="hidden md:block text-sm hover:text-blue-600">
           About
         </Link>
 
-        {/* SHOP */}
         <Link to="/products" className="hidden md:block text-sm hover:text-blue-600">
           Shop
         </Link>
 
       </div>
 
-      {/* ================= CENTER (SEARCH) ================= */}
+      {/* ================= CENTER ================= */}
       <form onSubmit={handleSearch} className="hidden md:flex flex-1 max-w-md mx-6">
         <input
           type="text"
@@ -126,10 +123,8 @@ const Navbar = () => {
       {/* ================= RIGHT ================= */}
       <div className="flex items-center gap-4 text-sm">
 
-        {/* CART */}
         <Link to="/cart" className="relative text-lg">
           🛒
-
           {totalItems > 0 && (
             <span className="absolute -top-2 -right-2 bg-black text-white text-xs px-1.5 rounded-full">
               {totalItems}
@@ -152,23 +147,17 @@ const Navbar = () => {
             </button>
 
             {showUserMenu && (
-              <div className="absolute right-0 top-7 bg-white border shadow-md rounded w-44 z-50">
+              <div className="absolute right-0 mt-2 bg-white border shadow-md rounded w-44 z-50">
 
-                <Link
-                  to="/orders"
-                  className="block px-4 py-2 hover:bg-gray-100"
-                >
+                <Link to="/orders" className="block px-4 py-2 hover:bg-gray-100">
                   My Orders
                 </Link>
 
-                <Link
-                  to="/profile"
-                  className="block px-4 py-2 hover:bg-gray-100"
-                >
+                <Link to="/profile" className="block px-4 py-2 hover:bg-gray-100">
                   Profile
                 </Link>
 
-                {user.role === "admin" && (
+                {(user.role === "admin" || user.role === "superadmin") && (
                   <Link
                     to="/admin"
                     className="block px-4 py-2 hover:bg-gray-100 font-semibold"
